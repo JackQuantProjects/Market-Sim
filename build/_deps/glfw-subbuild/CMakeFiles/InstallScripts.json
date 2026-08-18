@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/jack/Documents/Market-Sim/build/_deps/glfw-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

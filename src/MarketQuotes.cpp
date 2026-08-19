@@ -11,7 +11,7 @@ private:
 public:
   MarketQuotes() {}
 
-  void DrawMarketPath(std::vector<float> path) {
+  void DrawMarketPath(std::vector<float> path, std::vector<float> bid, std::vector<float> ask) {
     ImGui::PlotLines(
         "GBM",
         path.data(),

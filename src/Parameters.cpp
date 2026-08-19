@@ -1,17 +1,22 @@
+#include <vector>
+#include <imgui.h>
+
+#include "GBM.cpp"
+
 class Parameters {
     private:
         //model parameters
-        float initial_price;
-        float vol;
-        float risk_aversion;
-        float liquidity;
-        float intensity;
+        float initial_price = 0;
+        float vol = 0;
+        float risk_aversion = 0;
+        float liquidity = 0;
+        float intensity = 0;
 
-        int duration;
+        int duration = 0;
 
         //realism
-        float latency;
-        float maker_fee;
+        float latency = 0;
+        float maker_fee = 0;
 
         //GBM
         GBM gbm = GBM();
@@ -58,7 +63,7 @@ class Parameters {
     }
 
     // Setters
-    float setInitialPrice(int value) {
+    void setInitialPrice(int value) {
         initial_price = value;
     }
 

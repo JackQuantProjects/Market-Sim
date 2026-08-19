@@ -260,9 +260,9 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /home/jack/Documents/Market-Sim/src/Draw.cpp \
   /home/jack/Documents/Market-Sim/src/GBM.cpp \
   /home/jack/Documents/Market-Sim/src/Inventory.cpp \
-  /home/jack/Documents/Market-Sim/src/MarketQuotes.cpp \
   /home/jack/Documents/Market-Sim/src/Parameters.cpp \
   /home/jack/Documents/Market-Sim/src/Sim.cpp \
+  /home/jack/Documents/Market-Sim/src/Stoikov.cpp \
   /usr/include/GL/gl.h \
   /usr/include/GL/glext.h \
   /usr/include/KHR/khrplatform.h \
@@ -348,11 +348,14 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/bits/waitflags.h \
   /usr/include/bits/waitstatus.h \
   /usr/include/bits/wchar.h \
+  /usr/include/bits/wctype-wchar.h \
   /usr/include/bits/wordsize.h \
   /usr/include/c++/16/backward/binders.h \
   /usr/include/c++/16/bit \
   /usr/include/c++/16/bits/alloc_traits.h \
   /usr/include/c++/16/bits/allocator.h \
+  /usr/include/c++/16/bits/basic_ios.h \
+  /usr/include/c++/16/bits/basic_ios.tcc \
   /usr/include/c++/16/bits/basic_string.h \
   /usr/include/c++/16/bits/basic_string.tcc \
   /usr/include/c++/16/bits/char_traits.h \
@@ -370,9 +373,12 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/bits/hash_bytes.h \
   /usr/include/c++/16/bits/invoke.h \
   /usr/include/c++/16/bits/ios_base.h \
+  /usr/include/c++/16/bits/istream.tcc \
   /usr/include/c++/16/bits/iterator_concepts.h \
   /usr/include/c++/16/bits/locale_classes.h \
   /usr/include/c++/16/bits/locale_classes.tcc \
+  /usr/include/c++/16/bits/locale_facets.h \
+  /usr/include/c++/16/bits/locale_facets.tcc \
   /usr/include/c++/16/bits/localefwd.h \
   /usr/include/c++/16/bits/max_size_type.h \
   /usr/include/c++/16/bits/memory_resource.h \
@@ -382,7 +388,10 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/bits/new_allocator.h \
   /usr/include/c++/16/bits/new_except.h \
   /usr/include/c++/16/bits/new_throw.h \
+  /usr/include/c++/16/bits/ostream.h \
+  /usr/include/c++/16/bits/ostream.tcc \
   /usr/include/c++/16/bits/ostream_insert.h \
+  /usr/include/c++/16/bits/ostream_print.h \
   /usr/include/c++/16/bits/postypes.h \
   /usr/include/c++/16/bits/predefined_ops.h \
   /usr/include/c++/16/bits/ptr_traits.h \
@@ -409,6 +418,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/bits/stl_pair.h \
   /usr/include/c++/16/bits/stl_uninitialized.h \
   /usr/include/c++/16/bits/stl_vector.h \
+  /usr/include/c++/16/bits/streambuf.tcc \
+  /usr/include/c++/16/bits/streambuf_iterator.h \
   /usr/include/c++/16/bits/string_view.tcc \
   /usr/include/c++/16/bits/stringfwd.h \
   /usr/include/c++/16/bits/uniform_int_dist.h \
@@ -429,6 +440,7 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/cstdio \
   /usr/include/c++/16/cstdlib \
   /usr/include/c++/16/cwchar \
+  /usr/include/c++/16/cwctype \
   /usr/include/c++/16/debug/assertions.h \
   /usr/include/c++/16/debug/debug.h \
   /usr/include/c++/16/exception \
@@ -438,16 +450,21 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/ext/string_conversions.h \
   /usr/include/c++/16/ext/type_traits.h \
   /usr/include/c++/16/initializer_list \
+  /usr/include/c++/16/ios \
   /usr/include/c++/16/iosfwd \
+  /usr/include/c++/16/iostream \
+  /usr/include/c++/16/istream \
   /usr/include/c++/16/limits \
   /usr/include/c++/16/new \
   /usr/include/c++/16/numbers \
   /usr/include/c++/16/numeric \
+  /usr/include/c++/16/ostream \
   /usr/include/c++/16/pstl/execution_defs.h \
   /usr/include/c++/16/pstl/glue_numeric_defs.h \
   /usr/include/c++/16/pstl/pstl_config.h \
   /usr/include/c++/16/random \
   /usr/include/c++/16/stdexcept \
+  /usr/include/c++/16/streambuf \
   /usr/include/c++/16/string \
   /usr/include/c++/16/string_view \
   /usr/include/c++/16/system_error \
@@ -472,6 +489,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/x86_64-pc-linux-gnu/bits/c++config.h \
   /usr/include/c++/16/x86_64-pc-linux-gnu/bits/c++locale.h \
   /usr/include/c++/16/x86_64-pc-linux-gnu/bits/cpu_defines.h \
+  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/ctype_base.h \
+  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/ctype_inline.h \
   /usr/include/c++/16/x86_64-pc-linux-gnu/bits/error_constants.h \
   /usr/include/c++/16/x86_64-pc-linux-gnu/bits/gthr-default.h \
   /usr/include/c++/16/x86_64-pc-linux-gnu/bits/gthr.h \
@@ -505,6 +524,7 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/sys/types.h \
   /usr/include/time.h \
   /usr/include/wchar.h \
+  /usr/include/wctype.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/include/float.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/include/stddef.h \
@@ -552,8 +572,6 @@ MarketSim: /usr/lib/Scrt1.o \
 
 libimgui_lib.a:
 
-_deps/glfw-build/src/libglfw3.a:
-
 CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o:
 
 CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
@@ -565,8 +583,6 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 /usr/lib32/libX11.so.6:
 
 /usr/lib32/libGLdispatch.so.0:
-
-/usr/lib32/libGLX.so.0:
 
 /usr/lib/librt.a:
 
@@ -590,8 +606,6 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/libgcc.a:
 
-/usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o:
-
 /usr/lib/libgcc_s.so.1:
 
 /usr/lib/libGL.so:
@@ -600,7 +614,39 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 
 /usr/lib/Scrt1.o:
 
+/usr/include/c++/16/x86_64-pc-linux-gnu/bits/ctype_inline.h:
+
+/usr/include/c++/16/streambuf:
+
+/usr/include/c++/16/istream:
+
+/usr/include/c++/16/iostream:
+
+/usr/include/c++/16/ios:
+
+/usr/lib32/libGLX.so.0:
+
+/usr/include/c++/16/bits/streambuf.tcc:
+
+/usr/include/c++/16/bits/ostream_print.h:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o:
+
+/usr/include/c++/16/bits/ostream.tcc:
+
+/usr/include/c++/16/bits/ostream.h:
+
+/usr/include/c++/16/bits/locale_facets.tcc:
+
+/usr/include/c++/16/bits/istream.tcc:
+
+/usr/include/c++/16/bits/basic_ios.h:
+
+/usr/include/bits/wctype-wchar.h:
+
 /usr/include/KHR/khrplatform.h:
+
+/usr/include/GL/glext.h:
 
 /usr/include/c++/16/bits/random.tcc:
 
@@ -617,6 +663,8 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/include/float.h:
 
 /usr/include/c++/16/bits/move.h:
+
+/usr/include/c++/16/bits/streambuf_iterator.h:
 
 /home/jack/Documents/Market-Sim/src/GBM.cpp:
 
@@ -635,6 +683,8 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 /usr/include/c++/16/bits/hash_bytes.h:
 
 /usr/include/c++/16/bits/utility.h:
+
+/usr/include/c++/16/cwctype:
 
 /usr/include/c++/16/bits/cxxabi_forced.h:
 
@@ -754,6 +804,8 @@ _deps/imgui-src/imconfig.h:
 
 /usr/include/c++/16/cstdlib:
 
+/usr/include/c++/16/bits/locale_facets.h:
+
 /usr/include/bits/struct_mutex.h:
 
 /usr/include/bits/byteswap.h:
@@ -813,6 +865,10 @@ _deps/imgui-src/imconfig.h:
 /usr/include/bits/fp-logb.h:
 
 /usr/include/bits/long-double.h:
+
+_deps/glfw-build/src/libglfw3.a:
+
+/home/jack/Documents/Market-Sim/src/Stoikov.cpp:
 
 /usr/include/c++/16/bits/cxxabi_init_exception.h:
 
@@ -936,8 +992,6 @@ _deps/imgui-src/backends/imgui_impl_glfw.h:
 
 /usr/include/c++/16/bits/stl_pair.h:
 
-/usr/include/GL/glext.h:
-
 _deps/imgui-src/imgui.h:
 
 /usr/include/c++/16/bits/stl_uninitialized.h:
@@ -978,9 +1032,13 @@ _deps/imgui-src/imgui.h:
 
 /usr/include/c++/16/cstddef:
 
+/usr/include/c++/16/bits/basic_ios.tcc:
+
 /usr/include/c++/16/cstdint:
 
 /usr/include/c++/16/cstdio:
+
+/usr/include/wctype.h:
 
 /usr/include/bits/fp-fast.h:
 
@@ -1020,6 +1078,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o:
 
 /usr/include/c++/16/ext/string_conversions.h:
 
+/usr/include/c++/16/x86_64-pc-linux-gnu/bits/ctype_base.h:
+
 /usr/include/c++/16/tr1/ell_integral.tcc:
 
 /usr/include/bits/thread-shared-types.h:
@@ -1041,6 +1101,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o:
 /usr/include/c++/16/pstl/glue_numeric_defs.h:
 
 /usr/include/features-time64.h:
+
+/usr/include/c++/16/ostream:
 
 /usr/include/bits/types/struct_timeval.h:
 

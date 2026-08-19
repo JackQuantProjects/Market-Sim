@@ -226,126 +226,6 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f _deps/glfw-build/src/CMakeFiles/update_mappings.dir/build.make _deps/glfw-build/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
-Inventory/Inventory.o: Inventory/Inventory.cpp.o
-.PHONY : Inventory/Inventory.o
-
-# target to build an object file
-Inventory/Inventory.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/Inventory/Inventory.cpp.o
-.PHONY : Inventory/Inventory.cpp.o
-
-Inventory/Inventory.i: Inventory/Inventory.cpp.i
-.PHONY : Inventory/Inventory.i
-
-# target to preprocess a source file
-Inventory/Inventory.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/Inventory/Inventory.cpp.i
-.PHONY : Inventory/Inventory.cpp.i
-
-Inventory/Inventory.s: Inventory/Inventory.cpp.s
-.PHONY : Inventory/Inventory.s
-
-# target to generate assembly for a file
-Inventory/Inventory.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/Inventory/Inventory.cpp.s
-.PHONY : Inventory/Inventory.cpp.s
-
-MarketQuotes/MarketQuotes.o: MarketQuotes/MarketQuotes.cpp.o
-.PHONY : MarketQuotes/MarketQuotes.o
-
-# target to build an object file
-MarketQuotes/MarketQuotes.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/MarketQuotes/MarketQuotes.cpp.o
-.PHONY : MarketQuotes/MarketQuotes.cpp.o
-
-MarketQuotes/MarketQuotes.i: MarketQuotes/MarketQuotes.cpp.i
-.PHONY : MarketQuotes/MarketQuotes.i
-
-# target to preprocess a source file
-MarketQuotes/MarketQuotes.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/MarketQuotes/MarketQuotes.cpp.i
-.PHONY : MarketQuotes/MarketQuotes.cpp.i
-
-MarketQuotes/MarketQuotes.s: MarketQuotes/MarketQuotes.cpp.s
-.PHONY : MarketQuotes/MarketQuotes.s
-
-# target to generate assembly for a file
-MarketQuotes/MarketQuotes.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/MarketQuotes/MarketQuotes.cpp.s
-.PHONY : MarketQuotes/MarketQuotes.cpp.s
-
-Parameters/Parameters.o: Parameters/Parameters.cpp.o
-.PHONY : Parameters/Parameters.o
-
-# target to build an object file
-Parameters/Parameters.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/Parameters/Parameters.cpp.o
-.PHONY : Parameters/Parameters.cpp.o
-
-Parameters/Parameters.i: Parameters/Parameters.cpp.i
-.PHONY : Parameters/Parameters.i
-
-# target to preprocess a source file
-Parameters/Parameters.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/Parameters/Parameters.cpp.i
-.PHONY : Parameters/Parameters.cpp.i
-
-Parameters/Parameters.s: Parameters/Parameters.cpp.s
-.PHONY : Parameters/Parameters.s
-
-# target to generate assembly for a file
-Parameters/Parameters.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/Parameters/Parameters.cpp.s
-.PHONY : Parameters/Parameters.cpp.s
-
-TotalPNL/TotalPNL.o: TotalPNL/TotalPNL.cpp.o
-.PHONY : TotalPNL/TotalPNL.o
-
-# target to build an object file
-TotalPNL/TotalPNL.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/TotalPNL/TotalPNL.cpp.o
-.PHONY : TotalPNL/TotalPNL.cpp.o
-
-TotalPNL/TotalPNL.i: TotalPNL/TotalPNL.cpp.i
-.PHONY : TotalPNL/TotalPNL.i
-
-# target to preprocess a source file
-TotalPNL/TotalPNL.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/TotalPNL/TotalPNL.cpp.i
-.PHONY : TotalPNL/TotalPNL.cpp.i
-
-TotalPNL/TotalPNL.s: TotalPNL/TotalPNL.cpp.s
-.PHONY : TotalPNL/TotalPNL.s
-
-# target to generate assembly for a file
-TotalPNL/TotalPNL.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/TotalPNL/TotalPNL.cpp.s
-.PHONY : TotalPNL/TotalPNL.cpp.s
-
-WayBar/WayBar.o: WayBar/WayBar.cpp.o
-.PHONY : WayBar/WayBar.o
-
-# target to build an object file
-WayBar/WayBar.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/WayBar/WayBar.cpp.o
-.PHONY : WayBar/WayBar.cpp.o
-
-WayBar/WayBar.i: WayBar/WayBar.cpp.i
-.PHONY : WayBar/WayBar.i
-
-# target to preprocess a source file
-WayBar/WayBar.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/WayBar/WayBar.cpp.i
-.PHONY : WayBar/WayBar.cpp.i
-
-WayBar/WayBar.s: WayBar/WayBar.cpp.s
-.PHONY : WayBar/WayBar.s
-
-# target to generate assembly for a file
-WayBar/WayBar.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/WayBar/WayBar.cpp.s
-.PHONY : WayBar/WayBar.cpp.s
-
 _deps/imgui-src/backends/imgui_impl_glfw.o: _deps/imgui-src/backends/imgui_impl_glfw.cpp.o
 .PHONY : _deps/imgui-src/backends/imgui_impl_glfw.o
 
@@ -514,29 +394,77 @@ _deps/imgui-src/imgui_widgets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_lib.dir/build.make CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.s
 .PHONY : _deps/imgui-src/imgui_widgets.cpp.s
 
-main.o: main.cpp.o
-.PHONY : main.o
+src/Inventory.o: src/Inventory.cpp.o
+.PHONY : src/Inventory.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/Inventory.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/Inventory.cpp.o
+.PHONY : src/Inventory.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/Inventory.i: src/Inventory.cpp.i
+.PHONY : src/Inventory.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Inventory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/Inventory.cpp.i
+.PHONY : src/Inventory.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/Inventory.s: src/Inventory.cpp.s
+.PHONY : src/Inventory.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Inventory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/Inventory.cpp.s
+.PHONY : src/Inventory.cpp.s
+
+src/MarketQuotes.o: src/MarketQuotes.cpp.o
+.PHONY : src/MarketQuotes.o
+
+# target to build an object file
+src/MarketQuotes.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o
+.PHONY : src/MarketQuotes.cpp.o
+
+src/MarketQuotes.i: src/MarketQuotes.cpp.i
+.PHONY : src/MarketQuotes.i
+
+# target to preprocess a source file
+src/MarketQuotes.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.i
+.PHONY : src/MarketQuotes.cpp.i
+
+src/MarketQuotes.s: src/MarketQuotes.cpp.s
+.PHONY : src/MarketQuotes.s
+
+# target to generate assembly for a file
+src/MarketQuotes.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.s
+.PHONY : src/MarketQuotes.cpp.s
+
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -555,21 +483,6 @@ help:
 	@echo "... MarketSim"
 	@echo "... glfw"
 	@echo "... imgui_lib"
-	@echo "... Inventory/Inventory.o"
-	@echo "... Inventory/Inventory.i"
-	@echo "... Inventory/Inventory.s"
-	@echo "... MarketQuotes/MarketQuotes.o"
-	@echo "... MarketQuotes/MarketQuotes.i"
-	@echo "... MarketQuotes/MarketQuotes.s"
-	@echo "... Parameters/Parameters.o"
-	@echo "... Parameters/Parameters.i"
-	@echo "... Parameters/Parameters.s"
-	@echo "... TotalPNL/TotalPNL.o"
-	@echo "... TotalPNL/TotalPNL.i"
-	@echo "... TotalPNL/TotalPNL.s"
-	@echo "... WayBar/WayBar.o"
-	@echo "... WayBar/WayBar.i"
-	@echo "... WayBar/WayBar.s"
 	@echo "... _deps/imgui-src/backends/imgui_impl_glfw.o"
 	@echo "... _deps/imgui-src/backends/imgui_impl_glfw.i"
 	@echo "... _deps/imgui-src/backends/imgui_impl_glfw.s"
@@ -591,9 +504,15 @@ help:
 	@echo "... _deps/imgui-src/imgui_widgets.o"
 	@echo "... _deps/imgui-src/imgui_widgets.i"
 	@echo "... _deps/imgui-src/imgui_widgets.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/Inventory.o"
+	@echo "... src/Inventory.i"
+	@echo "... src/Inventory.s"
+	@echo "... src/MarketQuotes.o"
+	@echo "... src/MarketQuotes.i"
+	@echo "... src/MarketQuotes.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 

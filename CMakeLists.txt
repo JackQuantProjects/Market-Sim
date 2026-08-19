@@ -46,12 +46,9 @@ target_link_libraries(imgui_lib PUBLIC glfw)
 
 # Your application
 add_executable(MarketSim
-    main.cpp
-	MarketQuotes/MarketQuotes.cpp
-    Inventory/Inventory.cpp
-    TotalPNL/TotalPNL.cpp
-    Parameters/Parameters.cpp
-    WayBar/WayBar.cpp
+    src/main.cpp
+	src/MarketQuotes.cpp
+    src/Inventory.cpp
 )
 
 target_link_libraries(MarketSim PRIVATE imgui_lib GL)

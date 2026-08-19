@@ -1,7 +1,6 @@
 CMakeFiles/MarketSim.dir/MarketQuotes/MarketQuotes.cpp.o: \
  /home/jack/Documents/Market-Sim/MarketQuotes/MarketQuotes.cpp \
  /usr/include/stdc-predef.h \
- /home/jack/Documents/Market-Sim/MarketQuotes/MarketQuotes.hpp \
  /home/jack/Documents/Market-Sim/build/_deps/imgui-src/imgui.h \
  /home/jack/Documents/Market-Sim/build/_deps/imgui-src/imconfig.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/16/include/float.h \
@@ -13,12 +12,12 @@ CMakeFiles/MarketSim.dir/MarketQuotes/MarketQuotes.cpp.o: \
  /usr/include/sys/cdefs.h /usr/include/bits/long-double.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
- /usr/include/strings.h /usr/include/assert.h /usr/include/c++/16/cmath \
- /usr/include/c++/16/bits/requires_hosted.h \
+ /usr/include/strings.h /usr/include/assert.h /usr/include/c++/16/cfloat \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/os_defines.h \
  /usr/include/c++/16/x86_64-pc-linux-gnu/bits/cpu_defines.h \
- /usr/include/c++/16/pstl/pstl_config.h \
+ /usr/include/c++/16/pstl/pstl_config.h /usr/include/c++/16/cmath \
+ /usr/include/c++/16/bits/requires_hosted.h \
  /usr/include/c++/16/bits/cpp_type_traits.h \
  /usr/include/c++/16/bits/version.h /usr/include/c++/16/type_traits \
  /usr/include/c++/16/ext/type_traits.h /usr/include/math.h \

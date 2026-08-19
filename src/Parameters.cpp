@@ -6,17 +6,17 @@
 class Parameters {
     private:
         //model parameters
-        float initial_price = 0;
-        float vol = 0;
-        float risk_aversion = 0;
-        float liquidity = 0;
-        float intensity = 0;
+        float initial_price = 100.0f;
+        float vol = 0.2f;
+        float risk_aversion = 0.1f;
+        float liquidity = 1.5f;
+        float intensity = 1.0f;
 
-        int duration = 0;
+        float duration = 1.00f;
 
         //realism
-        float latency = 0;
-        float maker_fee = 0;
+        float latency = 0.01;
+        float maker_fee = 0.001;
 
         //GBM
         GBM gbm = GBM();
@@ -46,7 +46,7 @@ class Parameters {
         return intensity;
     }
 
-    int getDuration() const {
+    float getDuration() const {
         return duration;
     }
 
@@ -63,7 +63,7 @@ class Parameters {
     }
 
     // Setters
-    void setInitialPrice(int value) {
+    void setInitialPrice(float value) {
         initial_price = value;
     }
 
@@ -71,7 +71,7 @@ class Parameters {
         vol = value;
     }
 
-    void setRiskAversion(int value) {
+    void setRiskAversion(float value) {
         risk_aversion = value;
     }
 
@@ -83,7 +83,7 @@ class Parameters {
         intensity = value;
     }
 
-    void setDuration(int value) {
+    void setDuration(float value) {
         duration = value;
     }
 
@@ -97,96 +97,5 @@ class Parameters {
 
     void createMarketPath(){
         path = gbm.BrownianMotion(vol, initial_price);
-    }
-
-
-    void Draw(float x, float y, float width, float height) {
-    ImGui::SetNextWindowPos(
-        ImVec2(x, y),
-        ImGuiCond_Always
-    );
-
-    ImGui::SetNextWindowSize(
-        ImVec2(width, height),
-        ImGuiCond_Always
-    );
-
-    ImGui::Begin("PARAMETERS");
-
-    float initialPriceValue = initial_price;
-    float volValue = vol;
-    float riskAversionValue = risk_aversion;
-    float liquidityValue = liquidity;
-    float intensityValue = intensity;
-    int durationValue = duration;
-    float latencyValue = latency;
-    float makerFeeValue = maker_fee;
-
-    ImGui::PushStyleColor(
-        ImGuiCol_Text,
-        ImVec4(0, 0, 0, 1)
-    );
-
-    ImGui::Text("Initial Price:");
-    ImGui::InputFloat(
-        "##InitialPrice",
-        &initialPriceValue
-    );
-
-    ImGui::Text("Volatility:");
-    ImGui::InputFloat(
-        "##Volatility",
-        &volValue
-    );
-
-    ImGui::Text("Risk Aversion:");
-    ImGui::InputFloat(
-        "##RiskAversion",
-        &riskAversionValue
-    );
-
-    ImGui::Text("Liquidity:");
-    ImGui::InputFloat(
-        "##Liquidity",
-        &liquidityValue
-    );
-
-    ImGui::Text("Intensity:");
-    ImGui::InputFloat(
-        "##Intensity",
-        &intensityValue
-    );
-
-    ImGui::Text("Duration:");
-    ImGui::InputInt(
-        "##Duration",
-        &durationValue
-    );
-
-    ImGui::Text("Latency:");
-    ImGui::InputFloat(
-        "##Latency",
-        &latencyValue
-    );
-
-    ImGui::Text("Maker Fee:");
-    ImGui::InputFloat(
-        "##MakerFee",
-        &makerFeeValue
-    );
-
-    ImGui::PopStyleColor();
-
-    // Save changes back to the class
-    initial_price = initialPriceValue;
-    vol = volValue;
-    risk_aversion = riskAversionValue;
-    liquidity = liquidityValue;
-    intensity = intensityValue;
-    duration = durationValue;
-    latency = latencyValue;
-    maker_fee = makerFeeValue;
-
-    ImGui::End();
     }
 };

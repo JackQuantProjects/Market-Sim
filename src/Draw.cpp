@@ -4,7 +4,9 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
 
+#include <algorithm>
 #include <cfloat>
+#include <iostream>
 #include <vector>
 
 class Draw {
@@ -12,12 +14,24 @@ private:
     GLFWwindow* window;
     Parameters& parameters;
 
+    bool startPressed = false;
+    bool resetPressed = false;
+
 public:
+
+    // =========================================================
+    // Constructor
+    // =========================================================
+
     Draw(Parameters& p)
         : window(nullptr),
           parameters(p)
     {
     }
+
+    // =========================================================
+    // Initialise
+    // =========================================================
 
     bool Initialise()
     {
@@ -48,6 +62,7 @@ public:
 
         ImGui::StyleColorsDark();
 
+        // White window background
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg] =
             ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -57,9 +72,16 @@ public:
         return true;
     }
 
-    // ---------------------------------------------------------
-    // UI
-    // ---------------------------------------------------------
+    // =========================================================
+    // Initial UI
+    // =========================================================
+    //
+    // Creates the empty widgets.
+    //
+    // The actual contents of Market Quotes, Inventory and PNL
+    // are drawn separately by Sim.
+    //
+    // =========================================================
 
     void init()
     {
@@ -171,7 +193,10 @@ public:
 
         if (ImGui::InputFloat(
             "##RiskAversion",
-            &riskAversion
+            &riskAversion,
+            0.01f,
+            0.1f,
+            "%.2f"
         ))
         {
             parameters.setRiskAversion(riskAversion);
@@ -213,11 +238,11 @@ public:
         // Duration
         // -----------------------------------------------------
 
-        int duration = parameters.getDuration();
+        float duration = parameters.getDuration();
 
         ImGui::Text("Duration");
 
-        if (ImGui::InputInt(
+        if (ImGui::InputFloat(
             "##Duration",
             &duration
         ))
@@ -262,7 +287,7 @@ public:
         ImGui::PopStyleColor();
 
         // =====================================================
-        // Market Quotes
+        // Empty Market Quotes Window
         // =====================================================
 
         ImGui::SetNextWindowPos(
@@ -277,12 +302,17 @@ public:
 
         ImGui::Begin("Market Quotes");
 
-        ImGui::Text("Market");
+        // Empty.
+        // Sim can draw into this window using:
+        //
+        // BeginMarketWindow();
+        // DrawMarket(...);
+        // EndMarketWindow();
 
         ImGui::End();
 
         // =====================================================
-        // Inventory
+        // Empty Inventory Window
         // =====================================================
 
         ImGui::SetNextWindowPos(
@@ -297,12 +327,13 @@ public:
 
         ImGui::Begin("Inventory");
 
-        ImGui::Text("Inventory");
+        // Empty.
+        // Sim can draw using DrawInventory().
 
         ImGui::End();
 
         // =====================================================
-        // Total PNL
+        // Empty PNL Window
         // =====================================================
 
         ImGui::SetNextWindowPos(
@@ -317,7 +348,8 @@ public:
 
         ImGui::Begin("Total PNL");
 
-        ImGui::Text("Total PNL");
+        // Empty.
+        // Sim can draw using DrawPNL().
 
         ImGui::End();
     }
@@ -372,13 +404,47 @@ public:
         glfwSwapBuffers(window);
     }
 
+    // =========================================================
+    // Window Status
+    // =========================================================
+
     bool IsOpen()
     {
         return !glfwWindowShouldClose(window);
     }
 
     // =========================================================
-    // Market
+    // Market Window
+    // =========================================================
+
+    void BeginMarketWindow()
+    {
+        ImGui::SetNextWindowPos(
+            ImVec2(
+                0,
+                ImGui::GetIO().DisplaySize.y * 0.10f
+            ),
+            ImGuiCond_Always
+        );
+
+        ImGui::SetNextWindowSize(
+            ImVec2(
+                ImGui::GetIO().DisplaySize.x * 0.70f,
+                ImGui::GetIO().DisplaySize.y * 0.30f
+            ),
+            ImGuiCond_Always
+        );
+
+        ImGui::Begin("Market Quotes");
+    }
+
+    void EndMarketWindow()
+    {
+        ImGui::End();
+    }
+
+    // =========================================================
+    // Draw Market
     // =========================================================
 
     void DrawMarket(
@@ -387,23 +453,190 @@ public:
         const std::vector<float>& ask
     )
     {
-        if (!path.empty())
+        if (path.empty())
+            return;
+
+        ImDrawList* draw_list =
+            ImGui::GetWindowDrawList();
+
+        ImVec2 canvas_pos =
+            ImGui::GetCursorScreenPos();
+
+        ImVec2 canvas_size =
+            ImGui::GetContentRegionAvail();
+
+        // -----------------------------------------------------
+        // Find price range
+        // -----------------------------------------------------
+
+        float min_price = path[0];
+        float max_price = path[0];
+
+        auto update_range =
+            [&](const std::vector<float>& values)
         {
-            ImGui::PlotLines(
-                "Market Price",
-                path.data(),
-                path.size(),
-                0,
-                nullptr,
-                FLT_MAX,
-                FLT_MAX,
-                ImVec2(-1, -1)
-            );
+            for (float value : values)
+            {
+                min_price =
+                    std::min(min_price, value);
+
+                max_price =
+                    std::max(max_price, value);
+            }
+        };
+
+        update_range(path);
+        update_range(bid);
+        update_range(ask);
+
+        // Prevent division by zero
+        if (max_price == min_price)
+        {
+            max_price += 1.0f;
+            min_price -= 1.0f;
         }
+
+        // -----------------------------------------------------
+        // Price -> screen Y
+        // -----------------------------------------------------
+
+        auto price_to_screen_y =
+            [&](float price)
+        {
+            float normalized =
+                (price - min_price) /
+                (max_price - min_price);
+
+            return canvas_pos.y +
+                   canvas_size.y *
+                   (1.0f - normalized);
+        };
+
+        // -----------------------------------------------------
+        // Draw line
+        // -----------------------------------------------------
+
+        auto draw_line =
+            [&](const std::vector<float>& values,
+                ImU32 colour)
+        {
+            if (values.size() < 2)
+                return;
+
+            for (size_t i = 1;
+                 i < values.size();
+                 ++i)
+            {
+                float x1 =
+                    canvas_pos.x +
+                    (
+                        static_cast<float>(i - 1) /
+                        static_cast<float>(values.size() - 1)
+                    ) *
+                    canvas_size.x;
+
+                float x2 =
+                    canvas_pos.x +
+                    (
+                        static_cast<float>(i) /
+                        static_cast<float>(values.size() - 1)
+                    ) *
+                    canvas_size.x;
+
+                float y1 =
+                    price_to_screen_y(
+                        values[i - 1]
+                    );
+
+                float y2 =
+                    price_to_screen_y(
+                        values[i]
+                    );
+
+                draw_list->AddLine(
+                    ImVec2(x1, y1),
+                    ImVec2(x2, y2),
+                    colour,
+                    2.0f
+                );
+            }
+        };
+
+        // -----------------------------------------------------
+        // Market Price
+        // Black
+        // -----------------------------------------------------
+
+        draw_line(
+            path,
+            IM_COL32(0, 0, 0, 255)
+        );
+
+        // -----------------------------------------------------
+        // Bid
+        // Red
+        // -----------------------------------------------------
+
+        draw_line(
+            bid,
+            IM_COL32(255, 0, 0, 255)
+        );
+
+        // -----------------------------------------------------
+        // Ask
+        // Green
+        // -----------------------------------------------------
+
+        draw_line(
+            ask,
+            IM_COL32(0, 180, 0, 255)
+        );
     }
 
     // =========================================================
-    // Inventory
+    // Inventory Window
+    // =========================================================
+
+    void BeginInventoryWindow()
+    {
+        ImVec2 screen =
+            ImGui::GetIO().DisplaySize;
+
+        float wayBarHeight =
+            screen.y * 0.10f;
+
+        float panelHeight =
+            screen.y * 0.30f;
+
+        float leftWidth =
+            screen.x * 0.70f;
+
+        ImGui::SetNextWindowPos(
+            ImVec2(
+                0,
+                wayBarHeight + panelHeight
+            ),
+            ImGuiCond_Always
+        );
+
+        ImGui::SetNextWindowSize(
+            ImVec2(
+                leftWidth,
+                panelHeight
+            ),
+            ImGuiCond_Always
+        );
+
+        ImGui::Begin("Inventory");
+    }
+
+    void EndInventoryWindow()
+    {
+        ImGui::End();
+    }
+
+    // =========================================================
+    // Draw Inventory
     // =========================================================
 
     void DrawInventory(int inventory)
@@ -415,7 +648,49 @@ public:
     }
 
     // =========================================================
-    // PNL
+    // PNL Window
+    // =========================================================
+
+    void BeginPNLWindow()
+    {
+        ImVec2 screen =
+            ImGui::GetIO().DisplaySize;
+
+        float wayBarHeight =
+            screen.y * 0.10f;
+
+        float panelHeight =
+            screen.y * 0.30f;
+
+        float leftWidth =
+            screen.x * 0.70f;
+
+        ImGui::SetNextWindowPos(
+            ImVec2(
+                0,
+                wayBarHeight + panelHeight * 2
+            ),
+            ImGuiCond_Always
+        );
+
+        ImGui::SetNextWindowSize(
+            ImVec2(
+                leftWidth,
+                panelHeight
+            ),
+            ImGuiCond_Always
+        );
+
+        ImGui::Begin("Total PNL");
+    }
+
+    void EndPNLWindow()
+    {
+        ImGui::End();
+    }
+
+    // =========================================================
+    // Draw PNL
     // =========================================================
 
     void DrawPNL(float pnl)
@@ -466,9 +741,4 @@ public:
         glfwDestroyWindow(window);
         glfwTerminate();
     }
-
-private:
-
-    bool startPressed = false;
-    bool resetPressed = false;
 };

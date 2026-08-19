@@ -350,8 +350,10 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/bits/wchar.h \
   /usr/include/bits/wctype-wchar.h \
   /usr/include/bits/wordsize.h \
+  /usr/include/c++/16/algorithm \
   /usr/include/c++/16/backward/binders.h \
   /usr/include/c++/16/bit \
+  /usr/include/c++/16/bits/algorithmfwd.h \
   /usr/include/c++/16/bits/alloc_traits.h \
   /usr/include/c++/16/bits/allocator.h \
   /usr/include/c++/16/bits/basic_ios.h \
@@ -398,6 +400,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/bits/random.h \
   /usr/include/c++/16/bits/random.tcc \
   /usr/include/c++/16/bits/range_access.h \
+  /usr/include/c++/16/bits/ranges_algo.h \
+  /usr/include/c++/16/bits/ranges_algobase.h \
   /usr/include/c++/16/bits/ranges_base.h \
   /usr/include/c++/16/bits/ranges_cmp.h \
   /usr/include/c++/16/bits/ranges_util.h \
@@ -407,15 +411,18 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/bits/stdexcept_except.h \
   /usr/include/c++/16/bits/stdexcept_throw.h \
   /usr/include/c++/16/bits/stdexcept_throwfwd.h \
+  /usr/include/c++/16/bits/stl_algo.h \
   /usr/include/c++/16/bits/stl_algobase.h \
   /usr/include/c++/16/bits/stl_bvector.h \
   /usr/include/c++/16/bits/stl_construct.h \
   /usr/include/c++/16/bits/stl_function.h \
+  /usr/include/c++/16/bits/stl_heap.h \
   /usr/include/c++/16/bits/stl_iterator.h \
   /usr/include/c++/16/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/16/bits/stl_iterator_base_types.h \
   /usr/include/c++/16/bits/stl_numeric.h \
   /usr/include/c++/16/bits/stl_pair.h \
+  /usr/include/c++/16/bits/stl_tempbuf.h \
   /usr/include/c++/16/bits/stl_uninitialized.h \
   /usr/include/c++/16/bits/stl_vector.h \
   /usr/include/c++/16/bits/streambuf.tcc \
@@ -460,6 +467,7 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /usr/include/c++/16/numeric \
   /usr/include/c++/16/ostream \
   /usr/include/c++/16/pstl/execution_defs.h \
+  /usr/include/c++/16/pstl/glue_algorithm_defs.h \
   /usr/include/c++/16/pstl/glue_numeric_defs.h \
   /usr/include/c++/16/pstl/pstl_config.h \
   /usr/include/c++/16/random \
@@ -628,6 +636,12 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 
 /usr/include/c++/16/bits/streambuf.tcc:
 
+/usr/include/c++/16/bits/stl_heap.h:
+
+/usr/include/c++/16/bits/stl_algo.h:
+
+/usr/include/c++/16/bits/ranges_algo.h:
+
 /usr/include/c++/16/bits/ostream_print.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o:
@@ -641,6 +655,8 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 /usr/include/c++/16/bits/istream.tcc:
 
 /usr/include/c++/16/bits/basic_ios.h:
+
+/usr/include/c++/16/algorithm:
 
 /usr/include/bits/wctype-wchar.h:
 
@@ -733,6 +749,8 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 /usr/include/bits/types/struct_tm.h:
 
 /usr/include/bits/waitflags.h:
+
+/usr/include/c++/16/bits/stl_tempbuf.h:
 
 /usr/include/ctype.h:
 
@@ -1048,6 +1066,8 @@ _deps/imgui-src/imgui.h:
 
 /usr/include/c++/16/type_traits:
 
+/usr/include/c++/16/pstl/glue_algorithm_defs.h:
+
 /usr/include/c++/16/debug/assertions.h:
 
 /usr/include/c++/16/ext/alloc_traits.h:
@@ -1115,6 +1135,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o:
 /usr/include/stdio.h:
 
 /usr/include/c++/16/stdexcept:
+
+/usr/include/c++/16/bits/algorithmfwd.h:
 
 /usr/include/bits/libm-simd-decl-stubs.h:
 
@@ -1187,6 +1209,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o:
 /usr/include/sys/select.h:
 
 /usr/include/sys/single_threaded.h:
+
+/usr/include/c++/16/bits/ranges_algobase.h:
 
 /usr/include/sys/types.h:
 

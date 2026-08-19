@@ -1,6 +1,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <iostream>
 
 class GBM{
     private:
@@ -9,9 +10,10 @@ class GBM{
     GBM(){}
 
     std::vector<float> BrownianMotion(float vol, float initial_price) {
+        std::cout << "inside function \n";
         std::vector<float> path(252 + 1);
 
-        float dt = 1 / 252;
+        float dt = 1.0f / 252.0f;
         float drift = 0.05f;
 
         std::random_device rd;
@@ -27,6 +29,7 @@ class GBM{
                                         vol * std::sqrt(dt) * Z);
         }
 
+        std::cout << "end of function";
         return path;
     }
 };

@@ -21,7 +21,7 @@ public:
         float risk_aversion,
         float liquidity,
         float intensity,
-        int duration,
+        float duration,
         Inventory inventory
     )
         : inventory(inventory),
@@ -33,7 +33,7 @@ public:
     {
     }
     void quotes(int i, float s) {
-        float t = duration - (i/252);
+        float t = duration / 252.0f - i / 252.0f;
 
         float r = s - (inventory.getQuantity() * risk_aversion * (vol * vol) * t);
 
@@ -52,5 +52,11 @@ public:
     std::vector<float> getAsk() {
         return ask;
     }
-
+    void setParams(float vol_, float risk_aversion_, float liquidity_, float intensity_, float duration_) {
+        vol = vol_;
+        risk_aversion = risk_aversion_;
+        liquidity = liquidity_;
+        intensity = intensity_;
+        duration = duration_;
+    }
 };

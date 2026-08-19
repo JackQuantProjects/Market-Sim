@@ -15,7 +15,7 @@ private:
 public:
     Sim()
         : parameters(),
-          inventory(0),
+          inventory(-3000),
           stoikov(
               parameters.getVol(),
               parameters.getRiskAversion(),
@@ -48,7 +48,15 @@ public:
         std::cout << "Starting simulation\n";
 
         parameters.createMarketPath();
-        std::cout << parameters.getIntensity();
+        std::cout << parameters.getVol();
+
+        stoikov.setParams(
+            parameters.getVol(),
+            parameters.getRiskAversion(),
+            parameters.getLiquidity(),
+            parameters.getIntensity(),
+            parameters.getDuration()
+        );
 
         for (int i = 0; i < parameters.getPath().size(); i++)
         {
@@ -56,6 +64,10 @@ public:
         }
 
         std::cout << "Simulation complete\n";
+        for (auto item : stoikov.getBid()) {
+            std::cout << item;
+        }
+        draw.DrawMarket(parameters.getPath(), stoikov.getBid(), stoikov.getAsk());
     }
 
     void step(int i)
@@ -67,40 +79,62 @@ public:
     }
 
     void run()
+{
+    if (!draw.Initialise())
+        return;
+
+    while (draw.IsOpen())
     {
-        if (!draw.Initialise())
-            return;
+        draw.BeginFrame();
 
-        while (draw.IsOpen())
+        // Draw all UI
+        draw.init();
+
+        // Check whether user clicked Start
+        if (draw.StartPressed())
         {
-            // -----------------------------
-            // Start ImGui frame
-            // -----------------------------
-
-            draw.BeginFrame();
-
-            // -----------------------------
-            // Draw all UI
-            // -----------------------------
-
-            draw.init();
-
-            // -----------------------------
-            // Handle UI events
-            // -----------------------------
-
-            if (draw.StartPressed())
-            {
-                startSim();
-            }
-
-            // -----------------------------
-            // Finish frame
-            // -----------------------------
-
-            draw.EndFrame();
+            startSim();
         }
 
-        draw.Shutdown();
+        // Check Reset
+        if (draw.ResetPressed())
+        {
+            // reset simulation here
+            std::cout << "Reset pressed\n";
+        }
+
+        // Draw simulation results
+        if (!parameters.getPath().empty())
+        {
+            draw.BeginMarketWindow();
+
+            draw.DrawMarket(
+                parameters.getPath(),
+                stoikov.getBid(),
+                stoikov.getAsk()
+            );
+
+            draw.EndMarketWindow();
+        }
+
+        draw.BeginInventoryWindow();
+
+        draw.DrawInventory(
+            inventory.getQuantity()
+        );
+
+        draw.EndInventoryWindow();
+
+        draw.BeginPNLWindow();
+
+        // whatever your PNL getter is
+        // draw.DrawPNL(inventory.getPNL());
+
+        draw.EndPNLWindow();
+
+        draw.EndFrame();
     }
+
+    draw.Shutdown();
+}
 };

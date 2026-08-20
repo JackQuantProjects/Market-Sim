@@ -6,13 +6,19 @@ class Stoikov {
     std::vector<float> bid;
     std::vector<float> ask;
 
-    Inventory inventory;
+    Inventory& inventory;
 
     float vol;
     float risk_aversion;
     float liquidity;
     float intensity;
     int duration;
+
+    float current_bid;
+    float current_ask;
+
+    float current_bid_dist;
+    float current_ask_dist;
 
 public:
     //store constant variable for quicker retrieval
@@ -22,7 +28,7 @@ public:
         float liquidity,
         float intensity,
         float duration,
-        Inventory inventory
+        Inventory& inventory
     )
         : inventory(inventory),
           vol(vol),
@@ -33,14 +39,42 @@ public:
     {
     }
     void quotes(int i, float s) {
-        float t = duration / 252.0f - i / 252.0f;
+        // Time remaining in years
+        float t = std::max(
+            0.0f,
+            duration - static_cast<float>(i) / 252.0f
+        );
 
-        float r = s - (inventory.getQuantity() * risk_aversion * (vol * vol) * t);
+        // Reservation price
+        float r =
+            s -
+            inventory.getQuantity()
+            * risk_aversion
+            * vol * vol
+            * t;
 
-        float spread = (risk_aversion * (vol * vol) * t) + ((2.0f/risk_aversion) * std::log(1.0f + risk_aversion/liquidity));
+        // Optimal total spread
+        float spread =
+            risk_aversion
+            * vol * vol
+            * t
+            +
+            (2.0f / risk_aversion)
+            * std::log(
+                1.0f + risk_aversion / liquidity
+            );
+        
+        float halfSpread = spread / 2.0f;
+        
+        // Quotes centred around reservation price
+        float b = r - halfSpread;
+        float a = r + halfSpread;
+        
+        current_bid = b;
+        current_ask = a;
 
-        float b = r - spread/2;
-        float a = r + spread/2;
+        current_bid_dist = s-b;
+        current_ask_dist = a-s;
 
         bid.push_back(b);
         ask.push_back(a);
@@ -58,5 +92,28 @@ public:
         liquidity = liquidity_;
         intensity = intensity_;
         duration = duration_;
+    }
+
+    void reset() {
+        bid.clear();
+        ask.clear();
+
+        current_bid = 0.0f;
+        current_ask = 0.0f;
+        current_bid_dist = 0.0f;
+        current_ask_dist = 0.0f;
+    }
+
+    float getBidDist() {
+        return current_bid_dist;
+    }
+    float getAskDist() {
+        return current_ask_dist;
+    }
+    float currentBid() {
+        return current_bid;
+    }
+    float currentAsk() {
+        return current_ask;
     }
 };

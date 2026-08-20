@@ -261,6 +261,7 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o: /home/jack/Documents/Market-Sim/src/mai
   /home/jack/Documents/Market-Sim/src/GBM.cpp \
   /home/jack/Documents/Market-Sim/src/Inventory.cpp \
   /home/jack/Documents/Market-Sim/src/Parameters.cpp \
+  /home/jack/Documents/Market-Sim/src/Poisson.cpp \
   /home/jack/Documents/Market-Sim/src/Sim.cpp \
   /home/jack/Documents/Market-Sim/src/Stoikov.cpp \
   /usr/include/GL/gl.h \
@@ -664,6 +665,8 @@ CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 
 /usr/include/GL/glext.h:
 
+/usr/include/GL/gl.h:
+
 /usr/include/c++/16/bits/random.tcc:
 
 /usr/include/c++/16/bits/ptr_traits.h:
@@ -1026,8 +1029,6 @@ _deps/imgui-src/imgui.h:
 
 /usr/include/linux/stddef.h:
 
-/usr/include/GL/gl.h:
-
 /usr/include/c++/16/bits/uniform_int_dist.h:
 
 /usr/include/c++/16/bits/version.h:
@@ -1213,6 +1214,8 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o:
 /usr/include/c++/16/bits/ranges_algobase.h:
 
 /usr/include/sys/types.h:
+
+/home/jack/Documents/Market-Sim/src/Poisson.cpp:
 
 /usr/include/time.h:
 

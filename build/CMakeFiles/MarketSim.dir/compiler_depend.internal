@@ -264,6 +264,7 @@ CMakeFiles/MarketSim.dir/src/main.cpp.o
  /home/jack/Documents/Market-Sim/src/GBM.cpp
  /home/jack/Documents/Market-Sim/src/Inventory.cpp
  /home/jack/Documents/Market-Sim/src/Parameters.cpp
+ /home/jack/Documents/Market-Sim/src/Poisson.cpp
  /home/jack/Documents/Market-Sim/src/Sim.cpp
  /home/jack/Documents/Market-Sim/src/Stoikov.cpp
  /usr/include/GL/gl.h

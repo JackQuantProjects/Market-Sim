@@ -4,6 +4,7 @@
 #include "Inventory.cpp"
 #include "Stoikov.cpp"
 #include "Draw.cpp"
+#include "Poisson.cpp"
 
 class Sim {
 private:
@@ -11,11 +12,13 @@ private:
     Inventory inventory;
     Stoikov stoikov;
     Draw draw;
+    Poisson poisson;
+
 
 public:
     Sim()
         : parameters(),
-          inventory(-3000),
+          inventory(0),
           stoikov(
               parameters.getVol(),
               parameters.getRiskAversion(),
@@ -43,12 +46,19 @@ public:
         return stoikov;
     }
 
-    void startSim()
-    {
+    void startSim() {
         std::cout << "Starting simulation\n";
 
+        stoikov.reset();
+        parameters.reset();
+
+        std::cout << "About to create path\n";
+
         parameters.createMarketPath();
-        std::cout << parameters.getVol();
+
+        std::cout << "Path created\n";
+
+        std::cout << "About to set Stoikov params\n";
 
         stoikov.setParams(
             parameters.getVol(),
@@ -58,24 +68,59 @@ public:
             parameters.getDuration()
         );
 
+        poisson.setParams(parameters.getDuration(), parameters.getIntensity());
+
+        std::cout << "Stoikov params set\n";
+
         for (int i = 0; i < parameters.getPath().size(); i++)
         {
             step(i);
         }
 
         std::cout << "Simulation complete\n";
-        for (auto item : stoikov.getBid()) {
-            std::cout << item;
-        }
-        draw.DrawMarket(parameters.getPath(), stoikov.getBid(), stoikov.getAsk());
     }
 
     void step(int i)
     {
-        stoikov.quotes(
-            i,
-            parameters.getPath()[i]
+        float mid = parameters.getPath()[i];
+
+        stoikov.quotes(i, mid);
+
+        float bidDist = stoikov.getBidDist();
+        float askDist = stoikov.getAskDist();
+
+        int buyFills =
+            poisson.sample(
+                bidDist,
+                parameters.getLiquidity()
+            );
+
+        int sellFills =
+            poisson.sample(
+                askDist,
+                parameters.getLiquidity()
+            );
+
+        inventory.buy(
+            buyFills,
+            stoikov.currentBid()
         );
+
+        inventory.sell(
+            sellFills,
+            stoikov.currentAsk()
+        );
+
+        std::cout
+            << "Mid: " << mid
+            << " | Bid: " << stoikov.currentBid()
+            << " | Ask: " << stoikov.currentAsk()
+            << " | BidDist: " << bidDist
+            << " | AskDist: " << askDist
+            << " | Buy: " << buyFills
+            << " | Sell: " << sellFills
+            << " | Inventory: " << inventory.getQuantity()
+            << "\n";
     }
 
     void run()
@@ -99,8 +144,9 @@ public:
         // Check Reset
         if (draw.ResetPressed())
         {
-            // reset simulation here
-            std::cout << "Reset pressed\n";
+            std::cout << "Resetting\n";
+            stoikov.reset();
+            parameters.reset();
         }
 
         // Draw simulation results

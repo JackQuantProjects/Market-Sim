@@ -32,4 +32,8 @@ class GBM{
         std::cout << "end of function";
         return path;
     }
+
+    void reset() {
+        path.clear();
+    }
 };

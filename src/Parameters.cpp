@@ -9,10 +9,10 @@ class Parameters {
         float initial_price = 100.0f;
         float vol = 0.2f;
         float risk_aversion = 0.1f;
-        float liquidity = 1.5f;
-        float intensity = 1.0f;
+        float liquidity = 0.5f;
+        float intensity = 20.0f;
 
-        float duration = 1.00f;
+        float duration = 0.01f;
 
         //realism
         float latency = 0.01;
@@ -97,5 +97,10 @@ class Parameters {
 
     void createMarketPath(){
         path = gbm.BrownianMotion(vol, initial_price);
+    }
+
+    void reset() {
+        path.clear();
+        gbm.reset();
     }
 };

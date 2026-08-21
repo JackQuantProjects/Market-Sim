@@ -1,1 +1,1 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/MarketSim.dir/link.d CMakeFiles/MarketSim.dir/src/main.cpp.o CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o CMakeFiles/MarketSim.dir/src/Inventory.cpp.o -o MarketSim  libimgui_lib.a -lGL _deps/glfw-build/src/libglfw3.a /usr/lib/librt.a -lm -ldl
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/MarketSim.dir/link.d CMakeFiles/MarketSim.dir/src/main.cpp.o -o MarketSim  libimgui_lib.a -lGL _deps/glfw-build/src/libglfw3.a /usr/lib/librt.a -lm -ldl

@@ -3,8 +3,6 @@ MarketSim: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/crti.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o \
   CMakeFiles/MarketSim.dir/src/main.cpp.o \
-  CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o \
-  CMakeFiles/MarketSim.dir/src/Inventory.cpp.o \
   libimgui_lib.a \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libGL.so \
   _deps/glfw-build/src/libglfw3.a \
@@ -60,10 +58,6 @@ MarketSim: \
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtbeginS.o:
 
 CMakeFiles/MarketSim.dir/src/main.cpp.o:
-
-CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o:
-
-CMakeFiles/MarketSim.dir/src/Inventory.cpp.o:
 
 libimgui_lib.a:
 

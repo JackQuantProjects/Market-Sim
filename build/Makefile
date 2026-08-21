@@ -394,54 +394,6 @@ _deps/imgui-src/imgui_widgets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui_lib.dir/build.make CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.s
 .PHONY : _deps/imgui-src/imgui_widgets.cpp.s
 
-src/Inventory.o: src/Inventory.cpp.o
-.PHONY : src/Inventory.o
-
-# target to build an object file
-src/Inventory.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/Inventory.cpp.o
-.PHONY : src/Inventory.cpp.o
-
-src/Inventory.i: src/Inventory.cpp.i
-.PHONY : src/Inventory.i
-
-# target to preprocess a source file
-src/Inventory.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/Inventory.cpp.i
-.PHONY : src/Inventory.cpp.i
-
-src/Inventory.s: src/Inventory.cpp.s
-.PHONY : src/Inventory.s
-
-# target to generate assembly for a file
-src/Inventory.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/Inventory.cpp.s
-.PHONY : src/Inventory.cpp.s
-
-src/MarketQuotes.o: src/MarketQuotes.cpp.o
-.PHONY : src/MarketQuotes.o
-
-# target to build an object file
-src/MarketQuotes.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o
-.PHONY : src/MarketQuotes.cpp.o
-
-src/MarketQuotes.i: src/MarketQuotes.cpp.i
-.PHONY : src/MarketQuotes.i
-
-# target to preprocess a source file
-src/MarketQuotes.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.i
-.PHONY : src/MarketQuotes.cpp.i
-
-src/MarketQuotes.s: src/MarketQuotes.cpp.s
-.PHONY : src/MarketQuotes.s
-
-# target to generate assembly for a file
-src/MarketQuotes.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MarketSim.dir/build.make CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.s
-.PHONY : src/MarketQuotes.cpp.s
-
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -504,12 +456,6 @@ help:
 	@echo "... _deps/imgui-src/imgui_widgets.o"
 	@echo "... _deps/imgui-src/imgui_widgets.i"
 	@echo "... _deps/imgui-src/imgui_widgets.s"
-	@echo "... src/Inventory.o"
-	@echo "... src/Inventory.i"
-	@echo "... src/Inventory.s"
-	@echo "... src/MarketQuotes.o"
-	@echo "... src/MarketQuotes.i"
-	@echo "... src/MarketQuotes.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

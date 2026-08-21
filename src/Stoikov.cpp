@@ -1,5 +1,10 @@
+#pragma once
+
+#include <algorithm>
 #include <vector>
 #include <cmath>
+
+#include "Inventory.cpp"
 
 class Stoikov {
     private:
@@ -11,8 +16,8 @@ class Stoikov {
     float vol;
     float risk_aversion;
     float liquidity;
-    float intensity;
-    int duration;
+    float duration;
+    int steps;
 
     float current_bid;
     float current_ask;
@@ -26,50 +31,61 @@ public:
         float vol,
         float risk_aversion,
         float liquidity,
-        float intensity,
         float duration,
+        int steps,
         Inventory& inventory
     )
         : inventory(inventory),
           vol(vol),
           risk_aversion(risk_aversion),
           liquidity(liquidity),
-          intensity(intensity),
-          duration(duration)
+          duration(duration),
+          steps(steps),
+          current_bid(0.0f),
+          current_ask(0.0f),
+          current_bid_dist(0.0f),
+          current_ask_dist(0.0f)
     {
     }
-    void quotes(int i, float s) {
-        // Time remaining in years
-        float t = std::max(
-            0.0f,
-            duration - static_cast<float>(i) / 252.0f
-        );
+    void quotes(size_t i, float s) {
+        // Time remaining, on the same grid the path was generated on
+        float elapsed =
+            duration
+            * (static_cast<float>(i) / static_cast<float>(steps));
+
+        float t = std::max(0.0f, duration - elapsed);
+
+        // Avellaneda-Stoikov assumes arithmetic price moves, so sigma
+        // has to be in price units. The path is GBM, where vol is a
+        // relative rate, so scale it by the current price.
+        float sigma = vol * s;
+        float variance = sigma * sigma;
 
         // Reservation price
         float r =
             s -
             inventory.getQuantity()
             * risk_aversion
-            * vol * vol
+            * variance
             * t;
 
         // Optimal total spread
         float spread =
             risk_aversion
-            * vol * vol
+            * variance
             * t
             +
             (2.0f / risk_aversion)
             * std::log(
                 1.0f + risk_aversion / liquidity
             );
-        
+
         float halfSpread = spread / 2.0f;
-        
+
         // Quotes centred around reservation price
         float b = r - halfSpread;
         float a = r + halfSpread;
-        
+
         current_bid = b;
         current_ask = a;
 
@@ -80,18 +96,18 @@ public:
         ask.push_back(a);
 
     }
-    std::vector<float> getBid(){
+    const std::vector<float>& getBid(){
         return bid;
     }
-    std::vector<float> getAsk() {
+    const std::vector<float>& getAsk() {
         return ask;
     }
-    void setParams(float vol_, float risk_aversion_, float liquidity_, float intensity_, float duration_) {
+    void setParams(float vol_, float risk_aversion_, float liquidity_, float duration_, int steps_) {
         vol = vol_;
         risk_aversion = risk_aversion_;
         liquidity = liquidity_;
-        intensity = intensity_;
         duration = duration_;
+        steps = steps_;
     }
 
     void reset() {

@@ -1,6 +1,7 @@
+#pragma once
+
 #include <random>
 #include <cmath>
-#include <iostream>
 
 class Poisson {
 private:
@@ -15,32 +16,23 @@ public:
     {
     }
 
-    void setParams(float duration, float intensity)
+    void setParams(float duration, float intensity, int steps)
     {
-        float dt = 1.0f / 252.0f;
+        float dt = duration / static_cast<float>(steps);
 
         lambda = intensity * dt;
-
-        std::cout
-            << lambda
-            << " BASE LAMBDA\n";
     }
 
     int sample(float distance, float kappa)
     {
-        // A quote crossing the mid is outside
-        // the normal exponential fill model.
+        // A quote at or through the mid is aggressively priced, so it
+        // fills at the full base rate rather than not at all.
         if (distance < 0.0f)
-            return 0;
+            distance = 0.0f;
 
         float arrivalRate =
             lambda *
             std::exp(-kappa * distance);
-
-        std::cout << "base: " << lambda
-              << " multiplier: " << std::exp(-kappa * distance)
-              << " actual lambda: " << arrivalRate
-              << "\n";
 
         if (arrivalRate <= 0.0f)
             return 0;

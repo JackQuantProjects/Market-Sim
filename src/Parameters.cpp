@@ -1,3 +1,6 @@
+#pragma once
+
+#include <algorithm>
 #include <vector>
 #include <imgui.h>
 
@@ -10,13 +13,17 @@ class Parameters {
         float vol = 0.2f;
         float risk_aversion = 0.1f;
         float liquidity = 0.5f;
-        float intensity = 20.0f;
+        // order arrivals per year, so it scales with duration below
+        float intensity = 2000.0f;
 
         float duration = 0.01f;
 
         //realism
         float latency = 0.01;
         float maker_fee = 0.001;
+
+        //single time grid shared by the path, the quotes and the fills
+        static constexpr int steps = 252;
 
         //GBM
         GBM gbm = GBM();
@@ -58,49 +65,54 @@ class Parameters {
         return maker_fee;
     }
 
-    std::vector<float> getPath() const{
+    int getSteps() const {
+        return steps;
+    }
+
+    const std::vector<float>& getPath() const{
         return path;
     }
 
     // Setters
+    // Clamped: zero or negative values here produce inf/NaN quotes
+    // downstream, which silently kills the whole render.
     void setInitialPrice(float value) {
-        initial_price = value;
+        initial_price = std::max(value, 0.01f);
     }
 
     void setVol(float value) {
-        vol = value;
+        vol = std::max(value, 0.0f);
     }
 
     void setRiskAversion(float value) {
-        risk_aversion = value;
+        risk_aversion = std::max(value, 1e-4f);
     }
 
     void setLiquidity(float value) {
-        liquidity = value;
+        liquidity = std::max(value, 1e-4f);
     }
 
     void setIntensity(float value) {
-        intensity = value;
+        intensity = std::max(value, 0.0f);
     }
 
     void setDuration(float value) {
-        duration = value;
+        duration = std::max(value, 1e-4f);
     }
 
     void setLatency(float value) {
-        latency = value;
+        latency = std::max(value, 0.0f);
     }
 
     void setMakerFee(float value) {
-        maker_fee = value;
+        maker_fee = std::max(value, 0.0f);
     }
 
     void createMarketPath(){
-        path = gbm.BrownianMotion(vol, initial_price);
+        path = gbm.BrownianMotion(vol, initial_price, duration, steps);
     }
 
     void reset() {
         path.clear();
-        gbm.reset();
     }
 };

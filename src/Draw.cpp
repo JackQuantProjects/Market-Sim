@@ -1,3 +1,5 @@
+#pragma once
+
 #include <GLFW/glfw3.h>
 
 #include "backends/imgui_impl_glfw.h"
@@ -6,8 +8,11 @@
 
 #include <algorithm>
 #include <cfloat>
+#include <cstddef>
 #include <iostream>
 #include <vector>
+
+#include "Parameters.cpp"
 
 class Draw {
 private:
@@ -60,7 +65,9 @@ public:
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
 
-        ImGui::StyleColorsDark();
+        // Light theme, so text stays readable against the white
+        // window background below.
+        ImGui::StyleColorsLight();
 
         // White window background
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg] =
@@ -94,7 +101,6 @@ public:
         float rightWidth = width * 0.30f;
 
         float wayBarHeight = height * 0.10f;
-        float panelHeight = height * 0.30f;
 
         // =====================================================
         // Way Bar
@@ -138,11 +144,6 @@ public:
         ImGui::SetNextWindowSize(
             ImVec2(rightWidth, height - wayBarHeight),
             ImGuiCond_Always
-        );
-
-        ImGui::PushStyleColor(
-            ImGuiCol_Text,
-            ImVec4(0, 0, 0, 1)
         );
 
         ImGui::Begin("Parameters");
@@ -284,74 +285,9 @@ public:
 
         ImGui::End();
 
-        ImGui::PopStyleColor();
-
-        // =====================================================
-        // Empty Market Quotes Window
-        // =====================================================
-
-        ImGui::SetNextWindowPos(
-            ImVec2(0, wayBarHeight),
-            ImGuiCond_Always
-        );
-
-        ImGui::SetNextWindowSize(
-            ImVec2(leftWidth, panelHeight),
-            ImGuiCond_Always
-        );
-
-        ImGui::Begin("Market Quotes");
-
-        // Empty.
-        // Sim can draw into this window using:
-        //
-        // BeginMarketWindow();
-        // DrawMarket(...);
-        // EndMarketWindow();
-
-        ImGui::End();
-
-        // =====================================================
-        // Empty Inventory Window
-        // =====================================================
-
-        ImGui::SetNextWindowPos(
-            ImVec2(0, wayBarHeight + panelHeight),
-            ImGuiCond_Always
-        );
-
-        ImGui::SetNextWindowSize(
-            ImVec2(leftWidth, panelHeight),
-            ImGuiCond_Always
-        );
-
-        ImGui::Begin("Inventory");
-
-        // Empty.
-        // Sim can draw using DrawInventory().
-
-        ImGui::End();
-
-        // =====================================================
-        // Empty PNL Window
-        // =====================================================
-
-        ImGui::SetNextWindowPos(
-            ImVec2(0, wayBarHeight + panelHeight * 2),
-            ImGuiCond_Always
-        );
-
-        ImGui::SetNextWindowSize(
-            ImVec2(leftWidth, panelHeight),
-            ImGuiCond_Always
-        );
-
-        ImGui::Begin("Total PNL");
-
-        // Empty.
-        // Sim can draw using DrawPNL().
-
-        ImGui::End();
+        // Market Quotes, Inventory and Total PNL are opened and sized
+        // by Sim via BeginMarketWindow() / BeginInventoryWindow() /
+        // BeginPNLWindow(), so they are not begun here as well.
     }
 
     // =========================================================
@@ -453,7 +389,7 @@ public:
         const std::vector<float>& ask
     )
     {
-        if (path.empty())
+        if (path.size() < 2)
             return;
 
         ImDrawList* draw_list =
@@ -516,6 +452,11 @@ public:
         // Draw line
         // -----------------------------------------------------
 
+        // Every series shares the path's x axis, so a shorter bid or
+        // ask series truncates instead of stretching across the canvas.
+        const float x_steps =
+            static_cast<float>(path.size() - 1);
+
         auto draw_line =
             [&](const std::vector<float>& values,
                 ImU32 colour)
@@ -531,7 +472,7 @@ public:
                     canvas_pos.x +
                     (
                         static_cast<float>(i - 1) /
-                        static_cast<float>(values.size() - 1)
+                        x_steps
                     ) *
                     canvas_size.x;
 
@@ -539,7 +480,7 @@ public:
                     canvas_pos.x +
                     (
                         static_cast<float>(i) /
-                        static_cast<float>(values.size() - 1)
+                        x_steps
                     ) *
                     canvas_size.x;
 

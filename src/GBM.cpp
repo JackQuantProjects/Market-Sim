@@ -1,19 +1,19 @@
+#pragma once
+
 #include <vector>
 #include <random>
 #include <cmath>
-#include <iostream>
 
 class GBM{
-    private:
-    std::vector<float> path;
     public:
     GBM(){}
 
-    std::vector<float> BrownianMotion(float vol, float initial_price) {
-        std::cout << "inside function \n";
-        std::vector<float> path(252 + 1);
+    // Steps over [0, duration] years, so dt matches the horizon the
+    // quoting model is solving over.
+    std::vector<float> BrownianMotion(float vol, float initial_price, float duration, int steps) {
+        std::vector<float> path(steps + 1);
 
-        float dt = 1.0f / 252.0f;
+        float dt = duration / static_cast<float>(steps);
         float drift = 0.05f;
 
         std::random_device rd;
@@ -22,18 +22,13 @@ class GBM{
 
         path[0] = initial_price;
 
-        for (int i = 1; i <= 252; i++) {
+        for (int i = 1; i <= steps; i++) {
         float Z = normal(generator);
 
         path[i] = path[i - 1] * std::exp((drift - 0.5f * vol * vol) * dt +
                                         vol * std::sqrt(dt) * Z);
         }
 
-        std::cout << "end of function";
         return path;
-    }
-
-    void reset() {
-        path.clear();
     }
 };

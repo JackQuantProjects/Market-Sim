@@ -1,3 +1,6 @@
+#pragma once
+
+#include <cstddef>
 #include <iostream>
 
 #include "Parameters.cpp"
@@ -23,8 +26,8 @@ public:
               parameters.getVol(),
               parameters.getRiskAversion(),
               parameters.getLiquidity(),
-              parameters.getIntensity(),
               parameters.getDuration(),
+              parameters.getSteps(),
               inventory
           ),
           draw(parameters)
@@ -51,28 +54,27 @@ public:
 
         stoikov.reset();
         parameters.reset();
-
-        std::cout << "About to create path\n";
+        inventory.reset();
 
         parameters.createMarketPath();
-
-        std::cout << "Path created\n";
-
-        std::cout << "About to set Stoikov params\n";
 
         stoikov.setParams(
             parameters.getVol(),
             parameters.getRiskAversion(),
             parameters.getLiquidity(),
-            parameters.getIntensity(),
-            parameters.getDuration()
+            parameters.getDuration(),
+            parameters.getSteps()
         );
 
-        poisson.setParams(parameters.getDuration(), parameters.getIntensity());
+        poisson.setParams(
+            parameters.getDuration(),
+            parameters.getIntensity(),
+            parameters.getSteps()
+        );
 
-        std::cout << "Stoikov params set\n";
+        const std::vector<float>& path = parameters.getPath();
 
-        for (int i = 0; i < parameters.getPath().size(); i++)
+        for (size_t i = 0; i < path.size(); i++)
         {
             step(i);
         }
@@ -80,7 +82,7 @@ public:
         std::cout << "Simulation complete\n";
     }
 
-    void step(int i)
+    void step(size_t i)
     {
         float mid = parameters.getPath()[i];
 
@@ -147,21 +149,19 @@ public:
             std::cout << "Resetting\n";
             stoikov.reset();
             parameters.reset();
+            inventory.reset();
         }
 
         // Draw simulation results
-        if (!parameters.getPath().empty())
-        {
-            draw.BeginMarketWindow();
+        draw.BeginMarketWindow();
 
-            draw.DrawMarket(
-                parameters.getPath(),
-                stoikov.getBid(),
-                stoikov.getAsk()
-            );
+        draw.DrawMarket(
+            parameters.getPath(),
+            stoikov.getBid(),
+            stoikov.getAsk()
+        );
 
-            draw.EndMarketWindow();
-        }
+        draw.EndMarketWindow();
 
         draw.BeginInventoryWindow();
 

@@ -8,8 +8,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/jack/Documents/Market-Sim/src/Inventory.cpp" "CMakeFiles/MarketSim.dir/src/Inventory.cpp.o" "gcc" "CMakeFiles/MarketSim.dir/src/Inventory.cpp.o.d"
-  "/home/jack/Documents/Market-Sim/src/MarketQuotes.cpp" "CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o" "gcc" "CMakeFiles/MarketSim.dir/src/MarketQuotes.cpp.o.d"
   "/home/jack/Documents/Market-Sim/src/main.cpp" "CMakeFiles/MarketSim.dir/src/main.cpp.o" "gcc" "CMakeFiles/MarketSim.dir/src/main.cpp.o.d"
   "" "MarketSim" "gcc" "CMakeFiles/MarketSim.dir/link.d"
   )

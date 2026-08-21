@@ -4,11 +4,18 @@ class Inventory {
 private:
   int q; // quantity
   int initial_q;
-  float profit = 0;
+  float cash = 0.0f;
 public:
   Inventory(int initq) : q(initq), initial_q(initq) {}
-  void buy(int amount, float price) { q += amount; }
-  void sell(int amount, float price) { q -= amount; }
+  void buy(int amount, float price) { 
+    q += amount;
+    cash -= (amount * price);
+  }
+  void sell(int amount, float price) {
+    q -= amount;
+    cash += (amount * price);
+  }
   int getQuantity() const { return q; }
-  void reset() { q = initial_q; profit = 0.0f; }
+  void reset() { q = initial_q; cash = 0.0f; }
+  void getCash(){ return cash}
 };

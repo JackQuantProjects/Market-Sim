@@ -173,8 +173,9 @@ public:
 
         draw.BeginPNLWindow();
 
-        // whatever your PNL getter is
-        // draw.DrawPNL(inventory.getPNL());
+        // Replace with draw.DrawPNL(inventory.getPNL()) once
+        // fills carry their price through to a cash balance.
+        draw.DrawPNLUnavailable();
 
         draw.EndPNLWindow();
 

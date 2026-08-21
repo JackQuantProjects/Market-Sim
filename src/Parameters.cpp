@@ -29,6 +29,12 @@ class Parameters {
         GBM gbm = GBM();
         std::vector<float> path;
 
+        // pnl
+        std::vector<float> pnl;
+        
+        //inventory
+        std::vector<int> inventory_list;
+
     public:
     Parameters(){}
 
@@ -114,5 +120,23 @@ class Parameters {
 
     void reset() {
         path.clear();
+        pnl.clear();
+        inventory_list.clear();
+    }
+
+    const std::vector<float>& getPnL() const {
+        return pnl;
+    }
+
+    void addCurrentCash(float cash) {
+        pnl.push_back(cash);
+    }
+
+    const std::vector<int>& getInventoryList() const {
+        return inventory_list;
+    }
+
+    void addToInventoryList(int current) {
+        inventory_list.push_back(current);
     }
 };

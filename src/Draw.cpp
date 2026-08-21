@@ -214,6 +214,110 @@ private:
         cursor.x += sw + 6.0f + ImGui::CalcTextSize(text).x + 18.0f;
     }
 
+    // A compact series chart filled back to a zero baseline, split
+    // at every sign change so gains and losses read at a glance.
+    void miniSeries(
+        ImVec2 a,
+        ImVec2 b,
+        const std::vector<float>& values,
+        ImVec4 posColour,
+        ImVec4 negColour
+    )
+    {
+        ImDrawList* dl = ImGui::GetWindowDrawList();
+
+        dl->AddRectFilled(a, b, Theme::U32(Theme::Panel()), 6.0f);
+
+        const float w = b.x - a.x;
+        const float h = b.y - a.y;
+
+        if (w < 8.0f || h < 8.0f)
+            return;
+
+        if (values.size() < 2)
+        {
+            ImGui::PushFont(fontUI, 11.0f);
+
+            const char* msg = "no data yet";
+            const ImVec2 ts = ImGui::CalcTextSize(msg);
+
+            dl->AddText(
+                ImVec2(a.x + (w - ts.x) * 0.5f, a.y + (h - ts.y) * 0.5f),
+                Theme::U32(Theme::TextFaint()),
+                msg
+            );
+
+            ImGui::PopFont();
+            return;
+        }
+
+        // The baseline is always in frame, so the sign of the
+        // series is never ambiguous.
+        float lo = 0.0f;
+        float hi = 0.0f;
+
+        for (float v : values)
+        {
+            if (!std::isfinite(v))
+                continue;
+
+            lo = std::min(lo, v);
+            hi = std::max(hi, v);
+        }
+
+        float pad = (hi - lo) * 0.15f;
+
+        if (!(pad > 0.0f))
+            pad = 1.0f;
+
+        lo -= pad;
+        hi += pad;
+
+        const float span = static_cast<float>(values.size() - 1);
+
+        auto toX = [&](size_t i)
+        {
+            return a.x + (static_cast<float>(i) / span) * w;
+        };
+
+        auto toY = [&](float v)
+        {
+            return b.y - ((v - lo) / (hi - lo)) * h;
+        };
+
+        const float zeroY = toY(0.0f);
+
+        dl->PushClipRect(a, b, true);
+
+        dl->AddLine(
+            ImVec2(a.x, zeroY),
+            ImVec2(b.x, zeroY),
+            Theme::U32(Theme::Fade(Theme::Line(), 0.35f)),
+            1.0f
+        );
+
+        for (size_t i = 1; i < values.size(); ++i)
+        {
+            dl->AddLine(
+                ImVec2(toX(i - 1), toY(values[i - 1])),
+                ImVec2(toX(i),     toY(values[i])),
+                Theme::U32(values[i - 1] + values[i] >= 0.0f
+                           ? posColour : negColour),
+                1.6f
+            );
+        }
+
+        const size_t last = values.size() - 1;
+
+        dl->AddCircleFilled(
+            ImVec2(toX(last), toY(values[last])),
+            2.8f,
+            Theme::U32(values[last] >= 0.0f ? posColour : negColour)
+        );
+
+        dl->PopClipRect();
+    }
+
     // Gridline spacing that lands on round numbers.
     static float niceStep(float range, int target)
     {
@@ -337,20 +441,20 @@ private:
         c[ImGuiCol_BorderShadow]   = ImVec4(0, 0, 0, 0);
 
         c[ImGuiCol_FrameBg]        = Theme::Raised();
-        c[ImGuiCol_FrameBgHovered] = Theme::Fade(Theme::Accent(), 0.14f);
-        c[ImGuiCol_FrameBgActive]  = Theme::Fade(Theme::Accent(), 0.22f);
+        c[ImGuiCol_FrameBgHovered] = Theme::Fade(Theme::Text(), 0.10f);
+        c[ImGuiCol_FrameBgActive]  = Theme::Fade(Theme::Text(), 0.16f);
 
-        c[ImGuiCol_Button]         = Theme::Raised();
-        c[ImGuiCol_ButtonHovered]  = Theme::Fade(Theme::Accent(), 0.24f);
-        c[ImGuiCol_ButtonActive]   = Theme::Fade(Theme::Accent(), 0.36f);
+        c[ImGuiCol_Button]         = Theme::Fade(Theme::Text(), 0.08f);
+        c[ImGuiCol_ButtonHovered]  = Theme::Fade(Theme::Text(), 0.16f);
+        c[ImGuiCol_ButtonActive]   = Theme::Fade(Theme::Text(), 0.24f);
 
-        c[ImGuiCol_SliderGrab]       = Theme::Accent();
-        c[ImGuiCol_SliderGrabActive] = Theme::Accent();
-        c[ImGuiCol_CheckMark]        = Theme::Accent();
+        c[ImGuiCol_SliderGrab]       = Theme::Text();
+        c[ImGuiCol_SliderGrabActive] = Theme::Text();
+        c[ImGuiCol_CheckMark]        = Theme::Text();
 
-        c[ImGuiCol_Header]         = Theme::Fade(Theme::Accent(), 0.18f);
-        c[ImGuiCol_HeaderHovered]  = Theme::Fade(Theme::Accent(), 0.26f);
-        c[ImGuiCol_HeaderActive]   = Theme::Fade(Theme::Accent(), 0.34f);
+        c[ImGuiCol_Header]         = Theme::Fade(Theme::Text(), 0.14f);
+        c[ImGuiCol_HeaderHovered]  = Theme::Fade(Theme::Text(), 0.20f);
+        c[ImGuiCol_HeaderActive]   = Theme::Fade(Theme::Text(), 0.28f);
 
         c[ImGuiCol_Separator]      = Theme::Border();
         c[ImGuiCol_ScrollbarBg]    = ImVec4(0, 0, 0, 0);
@@ -359,7 +463,7 @@ private:
         c[ImGuiCol_ScrollbarGrabActive]  = Theme::TextDim();
 
         c[ImGuiCol_ResizeGrip]     = ImVec4(0, 0, 0, 0);
-        c[ImGuiCol_NavCursor]      = Theme::Accent();
+        c[ImGuiCol_NavCursor]      = Theme::Text();
     }
 
     // A labelled, full-width numeric field.
@@ -490,7 +594,7 @@ public:
         dl->AddRectFilled(
             ImVec2(origin.x, origin.y + 15.0f),
             ImVec2(origin.x + 4.0f, origin.y + 41.0f),
-            Theme::U32(Theme::Accent()),
+            Theme::U32(Theme::Text()),
             2.0f
         );
 
@@ -552,7 +656,7 @@ public:
                 L.headerPos.y + (L.headerSize.y - 22.0f) * 0.5f
             ),
             status,
-            hasRun ? Theme::Bid() : Theme::TextDim()
+            hasRun ? Theme::Text() : Theme::TextDim()
         );
 
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 8.0f);
@@ -574,10 +678,10 @@ public:
         ImGui::SetCursorPos(ImVec2(right - resetW - 10.0f - startW, btnY));
 
         ImGui::PushStyleColor(ImGuiCol_Button, Theme::Accent());
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.376f, 0.655f, 1.0f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.196f, 0.478f, 0.867f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
-        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.290f, 0.290f, 0.290f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.145f, 0.145f, 0.145f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_Text, Theme::Text());
+        ImGui::PushStyleColor(ImGuiCol_Border, Theme::Fade(Theme::Text(), 0.30f));
 
         ImGui::PushFont(fontMedium, 14.0f);
 
@@ -867,11 +971,7 @@ public:
         // Plot background
         // -----------------------------------------------------
 
-        dl->AddRectFilled(
-            p0, p1,
-            Theme::U32(ImVec4(0.055f, 0.063f, 0.078f, 1.0f)),
-            6.0f
-        );
+        dl->AddRectFilled(p0, p1, Theme::U32(Theme::Panel()), 6.0f);
 
         dl->PushClipRect(p0, p1, true);
 
@@ -953,26 +1053,6 @@ public:
         dl->PushClipRect(p0, p1, true);
 
         // -----------------------------------------------------
-        // Quoted spread band
-        // -----------------------------------------------------
-
-        const size_t band =
-            std::min(path.size(), std::min(bid.size(), ask.size()));
-
-        const ImU32 bandCol = Theme::U32(Theme::Fade(Theme::Accent(), 0.11f));
-
-        for (size_t i = 1; i < band; ++i)
-        {
-            dl->AddQuadFilled(
-                ImVec2(toX(i - 1), toY(ask[i - 1])),
-                ImVec2(toX(i),     toY(ask[i])),
-                ImVec2(toX(i),     toY(bid[i])),
-                ImVec2(toX(i - 1), toY(bid[i - 1])),
-                bandCol
-            );
-        }
-
-        // -----------------------------------------------------
         // Series
         // -----------------------------------------------------
 
@@ -995,9 +1075,9 @@ public:
             }
         };
 
-        polyline(bid,  Theme::Bid(), 1.5f);
-        polyline(ask,  Theme::Ask(), 1.5f);
-        polyline(path, Theme::Mid(), 2.0f);
+        polyline(bid,  Theme::Bid(),  1.6f);
+        polyline(ask,  Theme::Ask(),  1.6f);
+        polyline(path, Theme::Line(), 2.0f);
 
         // -----------------------------------------------------
         // Last price marker
@@ -1006,8 +1086,8 @@ public:
         const size_t last = path.size() - 1;
         const ImVec2 lastPt(toX(last), toY(path[last]));
 
-        dl->AddCircleFilled(lastPt, 6.0f, Theme::U32(Theme::Fade(Theme::Mid(), 0.25f)));
-        dl->AddCircleFilled(lastPt, 3.0f, Theme::U32(Theme::Mid()));
+        dl->AddCircleFilled(lastPt, 6.0f, Theme::U32(Theme::Fade(Theme::Line(), 0.30f)));
+        dl->AddCircleFilled(lastPt, 3.0f, Theme::U32(Theme::Line()));
 
         // -----------------------------------------------------
         // Crosshair
@@ -1030,12 +1110,12 @@ public:
             dl->AddLine(
                 ImVec2(x, p0.y),
                 ImVec2(x, p1.y),
-                Theme::U32(Theme::Fade(Theme::Text(), 0.22f)),
+                Theme::U32(Theme::Fade(Theme::Text(), 0.55f)),
                 1.0f
             );
 
             dl->AddCircleFilled(
-                ImVec2(x, toY(path[idx])), 3.5f, Theme::U32(Theme::Mid()));
+                ImVec2(x, toY(path[idx])), 3.5f, Theme::U32(Theme::Line()));
 
             if (idx < bid.size())
                 dl->AddCircleFilled(
@@ -1062,20 +1142,20 @@ public:
 
             ImGui::PushFont(fontMono, 13.0f);
 
-            ImGui::PushStyleColor(ImGuiCol_Text, Theme::Mid());
+            ImGui::PushStyleColor(ImGuiCol_Text, Theme::Text());
             ImGui::Text("mid  %8.3f", path[idx]);
             ImGui::PopStyleColor();
 
             if (idx < ask.size())
             {
-                ImGui::PushStyleColor(ImGuiCol_Text, Theme::Ask());
+                ImGui::PushStyleColor(ImGuiCol_Text, Theme::Text());
                 ImGui::Text("ask  %8.3f", ask[idx]);
                 ImGui::PopStyleColor();
             }
 
             if (idx < bid.size())
             {
-                ImGui::PushStyleColor(ImGuiCol_Text, Theme::Bid());
+                ImGui::PushStyleColor(ImGuiCol_Text, Theme::Text());
                 ImGui::Text("bid  %8.3f", bid[idx]);
                 ImGui::PopStyleColor();
             }
@@ -1115,11 +1195,11 @@ public:
             const ImVec2 t0(p1.x + 5.0f, y - ts.y * 0.5f - 3.0f);
             const ImVec2 t1(t0.x + ts.x + 10.0f, t0.y + ts.y + 6.0f);
 
-            dl->AddRectFilled(t0, t1, Theme::U32(Theme::Mid()), 4.0f);
+            dl->AddRectFilled(t0, t1, Theme::U32(Theme::Line()), 4.0f);
 
             dl->AddText(
                 ImVec2(t0.x + 5.0f, t0.y + 3.0f),
-                Theme::U32(ImVec4(0.06f, 0.06f, 0.06f, 1.0f)),
+                Theme::U32(Theme::Background()),
                 buf
             );
 
@@ -1134,10 +1214,9 @@ public:
 
         ImVec2 cursor(origin.x, origin.y);
 
-        legendItem(cursor, Theme::Mid(), "Mid");
-        legendItem(cursor, Theme::Bid(), "Bid");
-        legendItem(cursor, Theme::Ask(), "Ask");
-        legendItem(cursor, Theme::Fade(Theme::Accent(), 0.45f), "Quoted spread");
+        legendItem(cursor, Theme::Line(), "Mid");
+        legendItem(cursor, Theme::Bid(),  "Bid");
+        legendItem(cursor, Theme::Ask(),  "Ask");
 
         ImGui::PopFont();
 
@@ -1187,22 +1266,20 @@ public:
         ImGui::End();
     }
 
-    void DrawInventory(int inventory)
+    // Big value plus caption, shared by both stat cards.
+    void statHeadline(
+        const char* title,
+        const char* value,
+        ImVec4 colour,
+        const char* caption
+    )
     {
-        label("NET POSITION");
+        label(title);
         ImGui::Dummy(ImVec2(0, 4));
 
-        const ImVec4 colour =
-            inventory > 0 ? Theme::Bid()
-          : inventory < 0 ? Theme::Ask()
-                          : Theme::TextDim();
-
-        char buf[32];
-        std::snprintf(buf, sizeof(buf), "%+d", inventory);
-
-        ImGui::PushFont(fontMono, 32.0f);
+        ImGui::PushFont(fontMono, 30.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, colour);
-        ImGui::TextUnformatted(inventory == 0 ? "0" : buf);
+        ImGui::TextUnformatted(value);
         ImGui::PopStyleColor();
         ImGui::PopFont();
 
@@ -1211,84 +1288,61 @@ public:
         ImGui::PushFont(fontUI, 12.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, Theme::TextFaint());
         ImGui::AlignTextToFramePadding();
-        ImGui::TextUnformatted(
+        ImGui::TextUnformatted(caption);
+        ImGui::PopStyleColor();
+        ImGui::PopFont();
+    }
+
+    // Fills whatever height the card has left with the series.
+    void seriesPanel(
+        const std::vector<float>& values,
+        ImVec4 posColour,
+        ImVec4 negColour
+    )
+    {
+        ImGui::Dummy(ImVec2(0, 4));
+
+        const ImVec2 avail = ImGui::GetContentRegionAvail();
+
+        if (avail.x < 40.0f || avail.y < 24.0f)
+            return;
+
+        const ImVec2 p = ImGui::GetCursorScreenPos();
+
+        miniSeries(
+            p,
+            ImVec2(p.x + avail.x, p.y + avail.y),
+            values,
+            posColour,
+            negColour
+        );
+    }
+
+    void DrawInventory(
+        int inventory,
+        const std::vector<int>& history
+    )
+    {
+        char buf[32];
+        std::snprintf(buf, sizeof(buf), "%+d", inventory);
+
+        statHeadline(
+            "NET POSITION",
+            inventory == 0 ? "0" : buf,
+            Theme::Text(),
             inventory > 0 ? "units long"
           : inventory < 0 ? "units short"
                           : "flat"
         );
-        ImGui::PopStyleColor();
-        ImGui::PopFont();
 
-        // -----------------------------------------------------
-        // Position gauge, centred on flat
-        // -----------------------------------------------------
+        // Position through time, so a runaway book is obvious.
+        std::vector<float> series;
+        series.reserve(history.size());
 
-        const float w = ImGui::GetContentRegionAvail().x;
-        const float h = 8.0f;
+        for (int q : history)
+            series.push_back(static_cast<float>(q));
 
-        // Bar plus its scale labels; drop the whole gauge rather
-        // than let it collide with the panel edge.
-        if (w < 40.0f || ImGui::GetContentRegionAvail().y < h + 24.0f)
-            return;
-
-        ImGui::Dummy(ImVec2(0, 4));
-
-        ImDrawList* dl = ImGui::GetWindowDrawList();
-        const ImVec2 p = ImGui::GetCursorScreenPos();
-
-        const float scale = std::max(
-            5.0f,
-            std::ceil(std::abs(static_cast<float>(inventory)) / 5.0f) * 5.0f
-        );
-
-        dl->AddRectFilled(
-            p, ImVec2(p.x + w, p.y + h),
-            Theme::U32(Theme::Raised()),
-            h * 0.5f
-        );
-
-        const float mid = p.x + w * 0.5f;
-
-        if (inventory != 0)
-        {
-            const float end =
-                mid + (static_cast<float>(inventory) / scale) * (w * 0.5f);
-
-            dl->AddRectFilled(
-                ImVec2(std::min(mid, end), p.y),
-                ImVec2(std::max(mid, end), p.y + h),
-                Theme::U32(colour),
-                h * 0.5f
-            );
-        }
-
-        dl->AddLine(
-            ImVec2(mid, p.y - 3.0f),
-            ImVec2(mid, p.y + h + 3.0f),
-            Theme::U32(Theme::TextFaint()),
-            1.0f
-        );
-
-        // Scale ends, drawn directly so they cannot be clipped by
-        // the panel's item cursor.
-        ImGui::PushFont(fontMono, 10.0f);
-
-        char loBuf[16];
-        char hiBuf[16];
-        std::snprintf(loBuf, sizeof(loBuf), "-%d", static_cast<int>(scale));
-        std::snprintf(hiBuf, sizeof(hiBuf), "+%d", static_cast<int>(scale));
-
-        const ImU32 faint = Theme::U32(Theme::TextFaint());
-        const float ly = p.y + h + 6.0f;
-
-        dl->AddText(ImVec2(p.x, ly), faint, loBuf);
-        dl->AddText(
-            ImVec2(p.x + w - ImGui::CalcTextSize(hiBuf).x, ly),
-            faint,
-            hiBuf
-        );
-
-        ImGui::PopFont();
+        seriesPanel(series, Theme::Line(), Theme::Line());
     }
 
     // =========================================================
@@ -1306,46 +1360,22 @@ public:
         ImGui::End();
     }
 
-    void DrawPNL(float pnl)
+    void DrawPNL(const std::vector<float>& pnl)
     {
-        label("TOTAL PNL");
-        ImGui::Dummy(ImVec2(0, 4));
-
-        const ImVec4 colour =
-            pnl > 0.0f ? Theme::Bid()
-          : pnl < 0.0f ? Theme::Ask()
-                       : Theme::TextDim();
+        const bool hasData = !pnl.empty();
+        const float value = hasData ? pnl.back() : 0.0f;
 
         char buf[32];
-        std::snprintf(buf, sizeof(buf), "%+.2f", pnl);
+        std::snprintf(buf, sizeof(buf), "%+.2f", value);
 
-        ImGui::PushFont(fontMono, 32.0f);
-        ImGui::PushStyleColor(ImGuiCol_Text, colour);
-        ImGui::TextUnformatted(buf);
-        ImGui::PopStyleColor();
-        ImGui::PopFont();
-    }
+        statHeadline(
+            "TOTAL PNL",
+            hasData ? buf : "n/a",
+            hasData ? Theme::Text() : Theme::TextFaint(),
+            hasData ? "marked to mid" : "not run yet"
+        );
 
-    // Placeholder for the panel until fills carry a price through
-    // to a cash balance.
-    void DrawPNLUnavailable()
-    {
-        label("TOTAL PNL");
-        ImGui::Dummy(ImVec2(0, 4));
-
-        ImGui::PushFont(fontMedium, 32.0f);
-        ImGui::PushStyleColor(ImGuiCol_Text, Theme::Fade(Theme::TextFaint(), 0.7f));
-        ImGui::TextUnformatted("n/a");
-        ImGui::PopStyleColor();
-        ImGui::PopFont();
-
-        ImGui::Dummy(ImVec2(0, 4));
-
-        ImGui::PushFont(fontUI, 12.0f);
-        ImGui::PushStyleColor(ImGuiCol_Text, Theme::TextFaint());
-        ImGui::TextWrapped("PnL is not computed yet - fills discard their price.");
-        ImGui::PopStyleColor();
-        ImGui::PopFont();
+        seriesPanel(pnl, Theme::Line(), Theme::Line());
     }
 
     // =========================================================

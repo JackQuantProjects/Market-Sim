@@ -17,5 +17,5 @@ public:
   }
   int getQuantity() const { return q; }
   void reset() { q = initial_q; cash = 0.0f; }
-  void getCash(){ return cash}
+  float getCash(){ return cash; }
 };

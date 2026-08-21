@@ -113,6 +113,17 @@ public:
             stoikov.currentAsk()
         );
 
+        // Cash alone is not PnL: buying moves cash down by exactly
+        // what the position is worth. Mark the book to the current
+        // mid so the series shows profit rather than spend.
+        const float markToMarket =
+            inventory.getCash() +
+            static_cast<float>(inventory.getQuantity()) * mid;
+
+        parameters.addCurrentCash(markToMarket);
+
+        parameters.addToInventoryList(inventory.getQuantity());
+
         std::cout
             << "Mid: " << mid
             << " | Bid: " << stoikov.currentBid()
@@ -122,6 +133,7 @@ public:
             << " | Buy: " << buyFills
             << " | Sell: " << sellFills
             << " | Inventory: " << inventory.getQuantity()
+            << " | PnL: " << markToMarket
             << "\n";
     }
 
@@ -166,16 +178,15 @@ public:
         draw.BeginInventoryWindow();
 
         draw.DrawInventory(
-            inventory.getQuantity()
+            inventory.getQuantity(),
+            parameters.getInventoryList()
         );
 
         draw.EndInventoryWindow();
 
         draw.BeginPNLWindow();
 
-        // Replace with draw.DrawPNL(inventory.getPNL()) once
-        // fills carry their price through to a cash balance.
-        draw.DrawPNLUnavailable();
+        draw.DrawPNL(parameters.getPnL());
 
         draw.EndPNLWindow();
 
